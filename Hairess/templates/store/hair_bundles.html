@@ -1,0 +1,96 @@
+{% extends 'store/category_main.html' %}
+
+{% block title %}
+Hair Bundles
+{% endblock %}
+
+{% load static %}
+{% block content %}
+	<div class="super_container_inner">
+		<div class="super_overlay"></div>
+
+		<!-- Home -->
+
+		<div class="home"> 
+			<div class="home_container d-flex flex-column align-items-center justify-content-end">
+				<div class="home_content text-center">
+					<div class="home_title">HAIR BUNDLES</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Products -->
+        
+		<div class="products">
+			<div class="container">
+				<div class="row products_bar_row">
+					<div class="col">
+						<div class="products_bar d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-start justify-content-center">
+							<div class="products_bar_links">
+								<ul class="d-flex flex-row align-items-start justify-content-start">
+									<li  class="active"><a href="{% url 'hair_bundles' %}">Hair Bundles</a></li>
+									<li><a href="{% url 'category' %}">New Products</a></li>
+                                    <li><a href="#">Sale Products</a></li>
+                                    <li><a href="#">Sale Products</a></li>
+                                    <li><a href="#">Sale Products</a></li>
+                                    <li><a href="#">Sale Products</a></li>
+                                    <li><a href="#">Sale Products</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+                </div>
+                
+				<div class="row products_row products_container grid">
+					{% for product in products%}
+					<!-- Product -->
+					<div class="col-xl-4 col-md-6 grid-item new">
+						<div class="product">
+							<div class="product_image"><a href="{% url 'hair_bundles_products' product.id %}"><img style="width: 450px; height: 400px;" src="{{product.imageURL}}" alt=""></a></div>
+							<div class="product_content">
+								<div class="product_info d-flex flex-row align-items-start justify-content-start">
+									<div>
+										<div>
+											<div class="product_name"><a href="{% url 'hair_bundles_products' product.id %}">{{product.name}}</a></div>
+											<div class="product_category">In <a href="category.html">Category</a></div>
+										</div>
+									</div>
+									<div class="ml-auto text-right">
+										<div class="product_price text-right">&#x20A6;{{product.price}}</div>
+									</div>
+								</div>
+								<div class="product_buttons">
+									<div class="text-right d-flex flex-row align-items-start justify-content-start">
+										<div class="product_button product_fav text-center d-flex flex-column align-items-center justify-content-center">
+											<div><div><img src="{% static 'images/heart_2.svg' %}" class="svg" alt=""><div>+</div></div></div>
+										</div>
+										<div class="product_button product_cart text-center d-flex flex-column align-items-center justify-content-center click-cart" data-product="{{product.id}}" data-action="add">
+											<div><div><img src="{% static 'images/cart.svg' %}" class="svg" alt=""><div>+</div></div></div>
+										</div>
+									</div>
+								</div>
+							</div>
+                        </div>
+                        
+					</div>
+					{% endfor %}
+				</div>
+				<div class="row page_nav_row">
+					<div class="col">
+						<div class="page_nav">
+							<ul class="pagination d-flex flex-row align-items-start justify-content-center">
+                                {% for page in paginator.page_range %}
+								<li class="page-item {% if page == page_number %} active {% endif %}">
+                                    <a class="page-link" href="?page={{page}}">{{page}}</a>
+                                </li>
+								
+                                {% endfor %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock content %}

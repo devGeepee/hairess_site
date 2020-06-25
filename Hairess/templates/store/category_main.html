@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>{% block title %} {% endblock %}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Little Closet template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/bootstrap-4.1.2/bootstrap.min.css' %}">
+    <link href="{% static 'plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/category.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/category_responsive.css' %}">
+
+    <script type="text/javascript">
+        var user = '{{request.user}}';
+         
+        function getToken(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getToken('csrftoken');
+        if (csrftoken == null)
+        {
+            csrftoken = '{{csrf_token}}'
+        }
+
+        //generates device id
+        function uuidv4() {
+          return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+          });
+        }
+
+
+
+
+        let device = getToken('device')
+
+        if (device == null || device == undefined){
+            device = uuidv4()
+        }
+
+        document.cookie ='device=' + device + ";domain=;path=/"
+        
+    </script>
+    
+</head>
+<body>
+    
+    <!-- Menu -->
+    
+    <div class="menu">
+    
+        <!-- Search -->
+        <div class="menu_search">
+            <form method="get" action="{% url 'search' %}" id="menu_search_form" class="menu_search_form">
+                <input type="text" name="q" class="search_input" value="{{searched_word}}" placeholder="Search Item" required="required">
+                <button class="menu_search_button"><img src="{% static 'images/search.png' %}" alt=""></button>
+            </form>
+        </div>
+        <!-- Navigation -->
+        <div class="menu_nav">
+            <ul>
+                <li><a href="{% url 'hair_bundles' %}">HAIR BUNDLES</a></li>
+                <li><a href="#">WIGS</a></li>
+                <li><a href="#">CLOSURES</a></li>
+                <li><a href="#">FRONTALS</a></li>
+                <li><a href="#">HAIR PRODUCTS</a></li>
+                <li><a href="#">ACCESSORIES</a></li>
+                <li><a href="#">SALES</a></li>
+            </ul>
+        </div>
+        <!-- Contact Info -->
+        <div class="menu_contact">
+            <div class="menu_phone d-flex flex-row align-items-center justify-content-start">
+                <div><div><img src="{% static 'images/phone.svg' %}" alt="https://www.flaticon.com/authors/freepik"></div></div>
+                <div>0818-758-1851</div>
+            </div>
+            <div class="menu_social">
+                <ul class="menu_social_list d-flex flex-row align-items-start justify-content-start">
+                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                    <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="super_container">
+    
+        <!-- Header -->
+    
+        <header class="header">
+            <div class="header_overlay"></div>
+            <div class="header_content d-flex flex-row align-items-center justify-content-start">
+                <div class="logo">
+                    <a href="{% url 'index' %}">
+                        <div class="d-flex flex-row align-items-center justify-content-start">
+                            <div class="logoshape"><img style="border-radius:50%; height: 50px; width: 50px;" src="{% static 'images/hairess_logo.jpeg' %}" alt=""></div>
+                            <div>HAIRESS GALLERY</div>
+                        </div>
+                    </a>	
+                </div>
+                <div class="hamburger"><i class="fa fa-bars" aria-hidden="true"></i></div>
+                <nav class="main_nav">
+                    <ul class="d-flex flex-row align-items-start justify-content-start">
+                        <!--<li class="active"><a href="#">Women</a></li>
+                        <li><a href="#">HAIR BUNDLES</a></li>
+                        <li><a href="#">WIGS</a></li>
+                        <li><a href="#">CLOSURES</a></li>
+                        <li><a href="#">FRONTALS</a></li>
+                        <li><a href="#">HAIR PRODUCTS</a></li>
+                        <li><a href="#">ACCESSORIES</a></li>
+                        <li><a href="#">SALES</a></li>-->
+                    </ul>
+                </nav>
+                <div class="header_right d-flex flex-row align-items-center justify-content-start ml-auto">
+                    <!-- Search -->
+                    <div class="header_search">
+                        <form method="get" action="{% url 'search' %}" id="header_search_form">
+                            <input type="text" class="search_input" name="q" value="{{searched_word}}" placeholder="Search Item" required="required">
+                            <button class="header_search_button"><img src="{% static 'images/search.png' %}" alt=""></button>
+                        </form>
+                    </div>
+                    
+                    <!-- User -->
+
+                    <div style="text-align: center;" class="user">
+                        {% if user %}
+                        <a href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: red; font-weight: bolder;">HI, {{user.first_name}}!<i style="font-size:10px; color: black; position: relative;left: 5px;" class="fa fa-caret-down"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a  style="font-size: 10px;"  class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> LOGOUT</a>
+                          </div>
+                        {% else %}
+                        <a href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><div><img src="{% static 'images/user.svg' %}" alt="https://www.flaticon.com/authors/freepik"><i style="position: relative; bottom: 22px; left: 17px; font-size: 10px; color: black;" class="fa fa-caret-down"></i></div></a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a  style="font-size: 11px;"  class="dropdown-item" href="{% url 'login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i>  LOGIN</a>
+                            <a style="font-size: 11px;" class="dropdown-item" href="{% url 'register' %}"><i class="fa fa-user-plus" aria-hidden="true"></i>   JOIN HAIRESS!</a>
+                          </div>
+                        {% endif %}
+                    </div>
+                    <!-- Cart -->
+                    <div class="cart"><a href="{% url 'cart' %}"><div><img class="svg" src="{% static 'images/cart.svg' %}" alt="https://www.flaticon.com/authors/freepik">
+                        {% for item in items %}
+                            <div style="background-color: red; color: white; text-align: center; border-radius: 100%; position: relative; top: -35px; left: 21px;">{{item.order.get_cart_items}}</div>
+                        {% endfor %}
+                    </div></a></div>
+                    <!-- Phone -->
+                    <div class="header_phone d-flex flex-row align-items-center justify-content-start">
+                        <div><div><img src="{% static 'images/phone.svg' %}" alt="https://www.flaticon.com/authors/freepik"></div></div>
+                        <div>0818-758-1851</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+     
+        {% block content%}
+
+        {% endblock content %}
+     
+    
+
+    		<!-- Footer -->
+
+		<footer class="footer">
+			<div class="footer_content">
+				<div class="container">
+					<div class="row">
+						
+						<!-- About -->
+						<div class="col-lg-4 footer_col">
+							<div class="footer_about">
+								<div class="footer_logo">
+									<a href="#">
+										<div class="d-flex flex-row align-items-center justify-content-start">
+											<div style="font-size: 15px;"><i class="fa fa-map-marker" aria-hidden="true"></i> NO 46 okpanam Road, Asaba,Delta State, Nigeria.</div>
+										</div>
+									</a>		
+								</div>
+								<div class="footer_about_text">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d507691.7517876769!2d6.4126856328125!3d6.218576999999991!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e0a59b7a6aaab%3A0xbc987bcba9817e56!2sHAIRESS%20HAIR%20EXTENSIONS%20%26%20ACCESSORIES%20LTD!5e0!3m2!1sen!2sng!4v1591839602393!5m2!1sen!2sng" width="350" height="350" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>								</div>
+							</div>
+						</div>
+
+						<!-- Footer Links -->
+						<div class="col-lg-4 footer_col">
+							<div class="footer_menu">
+								<div class="footer_title">Support</div>
+								<ul class="footer_list">
+									<li>
+										<a href="#"><div>Refund Policy</div></a>
+									</li>
+									<li>
+										<a href="#"><div>Terms and Conditions<div class="footer_tag_2">recommended</div></div></a>
+									</li>
+									<li>
+										<a href="#"><div>Customer Service</div></a>
+									</li>
+									<li>
+										<a href="#"><div>Contact</div></a>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						<!-- Footer Contact -->
+						<div class="col-lg-4 footer_col">
+							<div class="footer_contact">
+								<div class="footer_title">Stay in Touch</div>
+								<div class="newsletter">
+									<form action="#" id="newsletter_form" class="newsletter_form">
+										<input type="email" class="newsletter_input" placeholder="Subscribe to our Newsletter" required="required">
+										<button class="newsletter_button">+</button>
+									</form>
+								</div>
+								<div class="footer_social">
+									<div class="footer_title">Social</div>
+									<ul class="footer_social_list d-flex flex-row align-items-start justify-content-start">
+										<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+										<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+										<li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="footer_bar">
+				<div class="container">
+					<div class="row">
+						<div class="col">
+							<div class="footer_bar_content d-flex flex-md-row flex-column align-items-center justify-content-start">
+								<div class="copyright" style="color: black;">
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Hairess Hair Extensions LTD
+</div>
+								
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+        </footer>
+    </div>    
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'styles/bootstrap-4.1.2/popper.js' %}"></script>
+<script src="{% static 'styles/bootstrap-4.1.2/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/greensock/TweenMax.min.js' %}"></script>
+<script src="{% static 'plugins/greensock/TimelineMax.min.js' %}"></script>
+<script src="{% static 'plugins/scrollmagic/ScrollMagic.min.js' %}"></script>
+<script src="{% static 'plugins/greensock/animation.gsap.min.js' %}"></script>
+<script src="{% static 'plugins/greensock/ScrollToPlugin.min.js' %}"></script>
+<script src="{% static 'plugins/easing/easing.js' %}"></script>
+<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'plugins/progressbar/progressbar.min.js' %}"></script>
+<script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+<script src="{% static 'plugins/Isotope/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'plugins/Isotope/fitcolumns.js' %}"></script>
+<script src="{% static 'js/category.js' %}"></script>
+<script src="{% static 'js/addcart1.js' %}"></script>
+</body>
+</html>
