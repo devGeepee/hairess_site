@@ -44,7 +44,7 @@
 									<li>Total</li>
 								</ul>
 							</div>
-
+						
 							<!-- Cart Items -->
 							{% for item in items %}
 							<div class="cart_items">
@@ -124,15 +124,15 @@
 							<div class="cart_extra_content cart_extra_total">
 								<div class="cart_extra_title">Cart Total</div>
 								<ul class="cart_extra_total_list">
-									{% if items %}
-										{% for item in items %}
+									{% if order %}
+										{% for item in order %}
 											<li class="d-flex flex-row align-items-center justify-content-start">
 												<div class="cart_extra_total_title">Total Items</div>
-												<div class="cart_extra_total_value ml-auto">{{item.order.get_cart_items}}</div>
+												<div class="cart_extra_total_value ml-auto">{{item.get_cart_items}}</div>
 											</li>
 											<li class="d-flex flex-row align-items-center justify-content-start">
 												<div class="cart_extra_total_title">Subtotal</div>
-												<div class="cart_extra_total_value ml-auto">&#x20A6;{{item.order.get_cart_subtotal}}</div>
+												<div class="cart_extra_total_value ml-auto">&#x20A6;{{item.get_cart_subtotal}}</div>
 											</li>
 										{% endfor %}
 									{% else %}

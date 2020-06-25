@@ -14,7 +14,7 @@ from django.core.paginator import Paginator
 def index(request):
     if request.user.is_authenticated:
         customer = Customer.objects.get(customer_name = request.user.customer)#get customer when logged in
-        items = OrderItem.objects.filter(customer = customer) #Signed in user
+        order = Order.objects.filter(customer = customer)#Signed in user
         
     else:
         try:
@@ -25,7 +25,7 @@ def index(request):
             customer_create = Customer.objects.get_or_create(device_id = request.COOKIES['device'])
             customer = Customer.objects.get(device_id = request.COOKIES['device']) #get customer by device_id when not logged in
 
-        items = OrderItem.objects.filter(customer = customer) #Guest user 
+        order = Order.objects.filter(customer = customer) #Guest user 
 
         
     try:
@@ -36,7 +36,7 @@ def index(request):
     products = Product.objects.all()
     context = {'products' : products,
                'user' : user,
-               'items' : items
+               'order' : order
                }    
     return render(request,"store/index.html", context)
 
@@ -117,6 +117,7 @@ def Apicart(request):
     productId = data['productId']
     action = data['action']
     cookie = request.COOKIES['device'] 
+    print(productId, action)
     #userdata = data['user']
             
     #user = User.objects.get(username = userdata)
@@ -126,12 +127,12 @@ def Apicart(request):
             
         if action == 'add':
             product = Product.objects.get(id = productId)
+            print(product)
             try:
 
-                additem = OrderItem.objects.get(customer = customer)
-                if additem.product == product:
-                    additem.quantity += 1
-                    additem.save()
+                additem = OrderItem.objects.get(customer = customer, product = product)
+                additem.quantity += 1
+                additem.save()
 
             except:
 
@@ -167,10 +168,9 @@ def Apicart(request):
             product = Product.objects.get(id = productId)
             try:
 
-                additem = OrderItem.objects.get(customer = customer)
-                if additem.product == product:
-                    additem.quantity += 1
-                    additem.save()
+                additem = OrderItem.objects.get(customer = customer, product = product)
+                additem.quantity += 1
+                additem.save()
 
             except:
 
@@ -212,7 +212,7 @@ def category(request):
 def product_details(request, id):
     if request.user.is_authenticated:
         customer = Customer.objects.get(customer_name = request.user.customer)#get customer when logged in
-        items = OrderItem.objects.filter(customer = customer) #Signed in user
+        order = Order.objects.filter(customer = customer)#Signed in user
         
     else:
         try:
@@ -223,7 +223,7 @@ def product_details(request, id):
             customer_create = Customer.objects.get_or_create(device_id = request.COOKIES['device'])
             customer = Customer.objects.get(device_id = request.COOKIES['device']) #get customer by device_id when not logged in
 
-        items = OrderItem.objects.filter(customer = customer) #Guest user 
+        order = Order.objects.filter(customer = customer)#Guest user 
     
     try:
         user = User.objects.get(username = request.user)
@@ -231,7 +231,7 @@ def product_details(request, id):
         user = None
     
     products = Product.objects.get(id = id)
-    context = {'products':products,'user':user,'items':items}
+    context = {'products':products,'user':user,'order':order}
     
     return render(request,"store/product.html",context)
 

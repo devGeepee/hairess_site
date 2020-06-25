@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles/cart_responsive.css' %}">
     <script type="text/javascript">
         var user = '{{request.user}}';
-        console.log(user);
+         
         function getToken(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -34,6 +34,25 @@
         {
             csrftoken = '{{csrf_token}}'
         }
+
+        //generates device id
+        function uuidv4() {
+          return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+          });
+        }
+
+
+
+
+        let device = getToken('device')
+
+        if (device == null || device == undefined){
+            device = uuidv4()
+        }
+
+        document.cookie ='device=' + device + ";domain=;path=/"
         
     </script>
     
@@ -134,8 +153,8 @@
                     </div>
                     <!-- Cart -->
                     <div class="cart"><a href="{% url 'cart' %}"><div><img class="svg" src="{% static 'images/cart.svg' %}" alt="https://www.flaticon.com/authors/freepik">
-                        {% for item in items %}
-                            <div style="background-color: red; color: white; text-align: center; border-radius: 100%; position: relative; top: -35px; left: 21px;">{{item.order.get_cart_items}}</div>
+                        {% for item in order %}
+                            <div style="background-color: red; color: white; text-align: center; border-radius: 100%; position: relative; top: -35px; left: 21px;">{{item.get_cart_items}}</div>
                         {% endfor %}
                     </div></a></div>
                     <!-- Phone -->

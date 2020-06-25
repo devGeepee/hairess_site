@@ -157,8 +157,8 @@
                     </div>
                     <!-- Cart -->
                     <div class="cart"><a href="{% url 'cart' %}"><div><img class="svg" src="{% static 'images/cart.svg' %}" alt="https://www.flaticon.com/authors/freepik">
-                        {% for item in items %}
-                            <div style="background-color: red; color: white; text-align: center; border-radius: 100%; position: relative; top: -35px; left: 21px;">{{item.order.get_cart_items}}</div>
+                        {% for item in order %}
+                            <div style="background-color: red; color: white; text-align: center; border-radius: 100%; position: relative; top: -35px; left: 21px;">{{item.get_cart_items}}</div>
                         {% endfor %}
                     </div></a></div>
                     <!-- Phone -->
